@@ -10,6 +10,16 @@ ALTER COLUMN total_cases INT;
 Alter Table PortfolioProject..CovidDeaths
 ALTER COLUMN total_deaths INT;
 
+--comparing total cases and total deaths and death percentage
+Select 
+sum(convert(float, new_cases)) as totalcases, 
+SUM (CONVERT(float,new_deaths)) as totaldeaths,
+sum((CONVERT(float, new_deaths) / NULLIF(CONVERT(float, new_cases), 0)) * 100) AS Deathpercentage
+from PortfolioProject..covidDeaths
+where continent is not null
+--group by date, location
+order by 1,2
+
 --calculating Death Percentage Total cases vs Total deaths
 Select location, date, total_cases,total_deaths, 
 (CONVERT(float, total_deaths) / NULLIF(CONVERT(float, total_cases), 0)) * 100 AS Deathpercentage
